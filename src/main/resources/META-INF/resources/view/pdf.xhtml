@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="jakarta.faces.facelets"
+      lang="en">
+
+<f:view>
+    <ui:include src="../includes/header.xhtml"/>
+    <script>
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+        });
+        document.querySelectorAll('.disabled').forEach(element => {
+            element.style.pointerEvents = 'none';
+        });
+
+        pdfHideButtons = function() {
+            const pdfViewer = window.frames[0].PDFViewerApplication;
+            if (pdfViewer) {
+                pdfViewer.appConfig.toolbar?.print?.classList.add("hidden");
+                pdfViewer.appConfig.toolbar?.download?.classList.add("hidden");
+                pdfViewer.appConfig.toolbar?.editorFreeTextButton?.classList.add("hidden");
+                pdfViewer.appConfig.toolbar?.editorHighlightButton?.classList.add("hidden");
+                pdfViewer.appConfig.toolbar?.editorInkButton?.classList.add("hidden");
+                pdfViewer.appConfig.toolbar?.editorStampButton?.classList.add("hidden");
+                pdfViewer.appConfig.secondaryToolbar?.printButton.classList.add("hidden");
+                pdfViewer.appConfig.secondaryToolbar?.openFileButton.classList.add("hidden");
+            }
+        }
+        $(document).ready(function() {
+            setTimeout(function(){ pdfHideButtons(); }, 1000);
+        });
+    </script>
+    <h:body>
+        <div id="container">
+            <pe:documentViewer value="#{documentView.media}" height="1000px" cache="false"/>
+        </div>
+    </h:body>
+</f:view>
+</html>
