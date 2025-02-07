@@ -36,7 +36,8 @@ public class MediaFilesService implements MediaFiles {
 
     @Override
     public List<String> getMediaIds() {
-        return mediaFileRepository.findAll().stream()
+        return mediaFileRepository.findAll()
+                .stream()
                 .map(MediaFile::getMediaId)
                 .toList();
     }
