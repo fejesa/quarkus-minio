@@ -9,8 +9,12 @@ import org.omnifaces.util.Faces;
 import org.primefaces.model.StreamedContent;
 
 /**
- * This class is a JSF managed bean responsible for handling audio media requests.
- * It retrieves the audio file based on the media ID or token cookie from the request.
+ * A JSF managed bean responsible for handling audio media requests.
+ * <p>
+ * This class retrieves an audio file based on either a media ID passed as a request parameter
+ * or a token stored in a request cookie. If a valid media file is found, its content is streamed
+ * to the client.
+ * </p>
  */
 @Named
 @RequestScoped
@@ -19,13 +23,23 @@ public class AudioView {
     private final StreamedContent media;
 
     /**
-     * Constructs an `AudioView` instance.
+     * Constructs an {@code AudioView} instance and initializes the streamed media content.
+     * <p>
+     * The media file is identified using either:
+     * <ul>
+     *   <li>A media ID provided as a request parameter ({@code MediaViewerRequestParameters.MEDIA_ID_QUERY_PARAMETER}).</li>
+     *   <li>A token stored in a request cookie ({@code MediaViewerRequestParameters.TOKEN_COOKIE_NAME}),
+     *       which is resolved to a media ID using {@code MediaRequestCache}.</li>
+     * </ul>
+     * If neither a valid media ID nor a token is provided, an {@code IllegalArgumentException} is thrown.
+     * If the media file corresponding to the resolved media ID is not found, a {@code MediaFileNotFoundException} is thrown.
+     * </p>
      *
-     * @param requestCache the cache for media requests
-     * @param mediaFiles the service to access media files
-     * @param mediaFileContentProvider the provider to read media file content
-     * @throws IllegalArgumentException if no media ID or token cookie is found in the request or if the media ID is invalid
-     * @throws MediaFileNotFoundException if the audio file is not found
+     * @param requestCache               the cache for resolving media IDs from token cookies
+     * @param mediaFiles                 the service for retrieving media file metadata
+     * @param mediaFileContentProvider   the provider for reading and streaming media file content
+     * @throws IllegalArgumentException  if no media ID or token cookie is found in the request
+     * @throws MediaFileNotFoundException if the requested audio file does not exist
      */
     public AudioView(MediaRequestCache requestCache, MediaFiles mediaFiles, MediaFileContentProvider mediaFileContentProvider) {
         var param = Faces.getRequestParameter(MediaViewerRequestParameters.MEDIA_ID_QUERY_PARAMETER);
@@ -39,9 +53,13 @@ public class AudioView {
     }
 
     /**
-     * Returns the streamed content of the audio file.
+     * Returns the streamed content of the requested audio file.
+     * <p>
+     * This content is obtained from {@code MediaFileContentProvider} and is intended
+     * for use in JSF views, typically with PrimeFaces' {@code p:audio} component.
+     * </p>
      *
-     * @return the streamed content of the audio file
+     * @return the streamed content of the audio file, never {@code null}
      */
     public StreamedContent getMedia() {
         return media;
@@ -49,8 +67,12 @@ public class AudioView {
 
     /**
      * Returns the file extension of the audio file.
+     * <p>
+     * Currently, this implementation assumes that all audio files are in MP3 format.
+     * If additional formats are supported in the future, this method may need to be updated.
+     * </p>
      *
-     * @return the file extension of the audio file
+     * @return the file extension of the audio file, always {@code "mp3"}
      */
     public String getExtension() {
         return "mp3";
