@@ -16,6 +16,7 @@
         <quarkus-primefaces.version>3.15.0-RC2</quarkus-primefaces.version>
         <quarkus-omnifaces.version>4.6.1</quarkus-omnifaces.version>
         <quarkus-minio.version>3.7.7</quarkus-minio.version>
+        <tika.version>3.1.0</tika.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <awaitility.version>4.2.2</awaitility.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
@@ -72,12 +73,24 @@
             <artifactId>quarkus-omnifaces</artifactId>
             <version>${quarkus-omnifaces.version}</version>
         </dependency>
-        <!-- Test dependencies -->
+        <!-- MinIO dependencies -->
         <dependency>
             <groupId>io.quarkiverse.minio</groupId>
             <artifactId>quarkus-minio</artifactId>
             <version>${quarkus-minio.version}</version>
         </dependency>
+        <!-- Apache tika for content parsing -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers-standard-package</artifactId>
+            <version>${tika.version}</version>
+        </dependency>
+        <!-- Test dependencies -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
