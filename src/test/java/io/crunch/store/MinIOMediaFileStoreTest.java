@@ -1,6 +1,6 @@
-package io.crunch.media.store;
+package io.crunch.store;
 
-import io.crunch.media.shared.MediaFileServerException;
+import io.crunch.shared.MediaFileServerException;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;

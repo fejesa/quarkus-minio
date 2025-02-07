@@ -1,4 +1,4 @@
-package io.crunch.media.store;
+package io.crunch.store;
 
 import java.io.InputStream;
 import java.nio.file.Path;

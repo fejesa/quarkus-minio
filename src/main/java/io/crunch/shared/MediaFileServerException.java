@@ -1,4 +1,4 @@
-package io.crunch.media.shared;
+package io.crunch.shared;
 
 public class MediaFileServerException extends RuntimeException {
 

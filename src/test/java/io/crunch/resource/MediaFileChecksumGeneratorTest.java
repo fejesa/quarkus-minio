@@ -1,6 +1,6 @@
-package io.crunch.media.resource;
+package io.crunch.resource;
 
-import io.crunch.media.shared.MediaFileServerException;
+import io.crunch.shared.MediaFileServerException;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;

@@ -1,6 +1,6 @@
-package io.crunch.media.resource;
+package io.crunch.resource;
 
-import io.crunch.media.shared.MediaFileServerException;
+import io.crunch.shared.MediaFileServerException;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.commons.codec.digest.DigestUtils;
 

@@ -60,13 +60,14 @@
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-arc</artifactId>
+        </dependency>
+        <!-- PrimeFaces and OmniFaces dependencies -->
+        <dependency>
             <groupId>io.quarkiverse.primefaces</groupId>
             <artifactId>quarkus-primefaces</artifactId>
             <version>${quarkus-primefaces.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-arc</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkiverse.omnifaces</groupId>

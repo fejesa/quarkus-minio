@@ -1,4 +1,4 @@
-package io.crunch.media.resource;
+package io.crunch.resource;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
