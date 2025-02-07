@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ../../../minio-data:/data
+    environment:
+      MINIO_ROOT_USER: ROOTNAME
+      MINIO_ROOT_PASSWORD: CHANGEME123
+    command: server /data --console-address ":9001"
+
+  minio-init:
+    image: quay.io/minio/mc
+    depends_on:
+      - minio
+    entrypoint: [ "/bin/sh", "-c", "/init-minio.sh" ]
+    volumes:
+      - ./init-minio.sh:/init-minio.sh
