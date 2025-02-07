@@ -1,4 +1,4 @@
-package io.crunch.store;
+package io.crunch.media.store;
 
 import io.crunch.media.shared.MediaFileServerException;
 import io.minio.*;
