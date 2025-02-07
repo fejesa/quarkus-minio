@@ -17,6 +17,18 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
+/**
+ * RESTful API resource for handling media file uploads and retrieval.
+ * <p>
+ * This class provides endpoints to upload media files and fetch stored media IDs.
+ * It ensures data integrity by validating file checksums before storage.
+ * </p>
+ * <p>
+ * The resource utilizes Jakarta RESTful Web Services (JAX-RS) with RESTEasy Reactive for handling
+ * multipart file uploads. The uploaded files are validated, assigned a unique media ID,
+ * and stored persistently.
+ * </p>
+ */
 @Path("/api")
 public class MediaFileServerResource {
 
@@ -41,6 +53,19 @@ public class MediaFileServerResource {
         this.mediaFiles = mediaFiles;
     }
 
+    /**
+     * Handles the upload of a media file.
+     * <p>
+     * The uploaded file is validated using its checksum before being stored.
+     * If the validation succeeds, a unique media ID is generated, and the file is stored with its content type.
+     * </p>
+     *
+     * @param mediaFile             the uploaded media file (cannot be null)
+     * @param mediaFileDescription  metadata associated with the media file, including checksum validation
+     * @return a response containing the URL of the stored media file
+     * @throws BadRequestException if the checksum validation fails or any unexpected error occurs
+     * @throws NotAuthorizedException if the user is not authorized to upload the file
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -70,6 +95,14 @@ public class MediaFileServerResource {
         }
     }
 
+    /**
+     * Retrieves a list of stored media file IDs.
+     * <p>
+     * The response contains a list of URLs that can be used to access the stored media files.
+     * </p>
+     *
+     * @return a response containing the list of media file URLs
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public RestResponse<List<String>> getMediaIds() {
@@ -79,6 +112,17 @@ public class MediaFileServerResource {
                 .toList());
     }
 
+    /**
+     * Validates the checksum of an uploaded media file.
+     * <p>
+     * The computed checksum of the file is compared with the expected checksum provided in the request metadata.
+     * If the values do not match, an error is logged, and a {@code BadRequestException} is thrown.
+     * </p>
+     *
+     * @param mediaFile            the uploaded media file
+     * @param mediaFileDescription the metadata containing the expected checksum
+     * @throws BadRequestException if the checksum validation fails
+     */
     private void validateChecksum(FileUpload mediaFile, MediaFileDescription mediaFileDescription) {
         var checksum = checksumGenerator.checksum(mediaFile.filePath());
         if (!mediaFileDescription.checksum().equals(checksum)) {

@@ -12,6 +12,13 @@ import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 
+/**
+ * Implementation of {@link MediaFileStore} that uses <a href="https://min.io/">MinIO</a> for object storage.
+ * <p>
+ * This class provides methods for storing, retrieving, and checking file metadata in MinIO.
+ * It ensures that the required bucket exists upon application startup.
+ * </p>
+ */
 @ApplicationScoped
 public class MinIOMediaFileStore implements MediaFileStore {
 
@@ -21,11 +28,25 @@ public class MinIOMediaFileStore implements MediaFileStore {
 
     private final String bucketName;
 
+    /**
+     * Constructs a {@code MinIOMediaFileStore} with a MinIO client and the target bucket name.
+     *
+     * @param minioClient MinIO client for interacting with the object store.
+     * @param bucketName  The name of the MinIO bucket where media files are stored.
+     */
     public MinIOMediaFileStore(MinioClient minioClient, @ConfigProperty(name = "minio.bucket-name") String bucketName) {
         this.minioClient = minioClient;
         this.bucketName = bucketName;
     }
 
+    /**
+     * Stores a file in the MinIO bucket.
+     *
+     * @param path        The local file path of the file to be uploaded.
+     * @param fileName    The name of the file in MinIO.
+     * @param contentType The MIME type of the file.
+     * @throws MediaFileServerException if an error occurs during file upload.
+     */
     @Override
     public void store(Path path, String fileName, String contentType) {
         try {
@@ -44,6 +65,13 @@ public class MinIOMediaFileStore implements MediaFileStore {
         }
     }
 
+    /**
+     * Retrieves a file from the MinIO bucket.
+     *
+     * @param fileName The name of the file in MinIO.
+     * @return An {@link InputStream} to read the file content.
+     * @throws MediaFileServerException if an error occurs while reading the file.
+     */
     @Override
     public InputStream read(String fileName) {
         try {
@@ -59,6 +87,13 @@ public class MinIOMediaFileStore implements MediaFileStore {
         }
     }
 
+    /**
+     * Retrieves the size of a file stored in MinIO.
+     *
+     * @param fileName The name of the file in MinIO.
+     * @return The size of the file in bytes.
+     * @throws MediaFileServerException if an error occurs while fetching file metadata.
+     */
     @Override
     public long getFileSize(String fileName) {
         try {
@@ -75,6 +110,10 @@ public class MinIOMediaFileStore implements MediaFileStore {
         }
     }
 
+    /**
+     * Ensures that the MinIO bucket exists. If not, it is created.
+     * This method is called automatically after the application starts.
+     */
     @PostConstruct
     void initStore() {
         if (!bucketExists()) {
@@ -82,6 +121,11 @@ public class MinIOMediaFileStore implements MediaFileStore {
         }
     }
 
+    /**
+     * Creates the MinIO bucket if it does not already exist.
+     *
+     * @throws MediaFileServerException if an error occurs while creating the bucket.
+     */
     private void createBucket()  {
         try {
             logger.info("Creating bucket: {}", bucketName);
@@ -95,6 +139,12 @@ public class MinIOMediaFileStore implements MediaFileStore {
         }
     }
 
+    /**
+     * Checks whether the MinIO bucket exists.
+     *
+     * @return {@code true} if the bucket exists, {@code false} otherwise.
+     * @throws MediaFileServerException if an error occurs while checking for the bucket.
+     */
     private boolean bucketExists() {
         try {
             logger.info("Checking if bucket exists: {}", bucketName);
