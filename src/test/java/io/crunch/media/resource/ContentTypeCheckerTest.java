@@ -1,7 +1,5 @@
 package io.crunch.media.resource;
 
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,15 +11,12 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@QuarkusTest
 class ContentTypeCheckerTest {
-
-    @Inject
-    ContentTypeChecker contentTypeChecker;
 
     @ParameterizedTest
     @MethodSource("mediaSources")
     void checkContentType(String fileName, String expectedType) throws Exception {
+        var contentTypeChecker = new ContentTypeChecker();
         var path = resolvePath(fileName);
         var result = contentTypeChecker.getContentType(path, path.getFileName().toString());
         assertThat(result).isEqualTo(expectedType);
