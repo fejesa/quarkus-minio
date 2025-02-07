@@ -10,15 +10,15 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
-class MediaFileUrlTest {
+class MediaUrlsTest {
 
     @Inject
-    MediaFileUrl mediaFileUrl;
+    MediaUrls mediaUrls;
 
     @Test
     void getDifferentUUUIDWhenCalledMore() {
         var limit = 1_000_000;
-        var links = Stream.generate(mediaFileUrl::createUrl).limit(limit).collect(Collectors.toSet());
+        var links = Stream.generate(mediaUrls::createUrl).limit(limit).collect(Collectors.toSet());
         assertThat(links)
             .hasSize(limit)
             .extracting(String::length)

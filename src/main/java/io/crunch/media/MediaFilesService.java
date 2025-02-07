@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 @ApplicationScoped
 public class MediaFilesService implements MediaFiles {
@@ -25,5 +26,10 @@ public class MediaFilesService implements MediaFiles {
         mediaFileRepository.persistAndFlush(mediaFile);
         logger.info("Media file {} is stored", mediaFile.getMediaId());
         return mediaFile.getId();
+    }
+
+    @Override
+    public Optional<MediaFile> getByMediaId(String mediaId) {
+        return mediaFileRepository.findByMediaId(mediaId);
     }
 }

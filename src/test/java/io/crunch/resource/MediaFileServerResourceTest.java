@@ -23,7 +23,7 @@ class MediaFileServerResourceTest {
     MediaFileChecksumGenerator checksumGenerator;
 
     @Inject
-    MediaFileUrl mediaFileUrl;
+    MediaUrls mediaUrls;
 
     @Inject
     MediaFileStore mediaFileStore;
@@ -47,7 +47,7 @@ class MediaFileServerResourceTest {
             .extract()
             .response();
 
-        var mediaId = mediaFileUrl.getMediaId(response.getBody().asString());
+        var mediaId = mediaUrls.getMediaId(response.getBody().asString());
         try (var inputStream = mediaFileStore.read(mediaId)) {
             assertThat(inputStream).isNotNull();
         }

@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Map;
 
 @Path("/api")
 public class MediaFileServerResource {
@@ -30,7 +29,7 @@ public class MediaFileServerResource {
     ContentTypeExtractor contentTypeExtractor;
 
     @Inject
-    MediaFileUrl mediaFileUrl;
+    MediaUrls mediaUrls;
 
     @Inject
     MediaFileStore mediaFileStore;
@@ -50,8 +49,8 @@ public class MediaFileServerResource {
             validateChecksum(mediaFile, mediaFileDescription);
 
             var contentType = contentTypeExtractor.getContentType(mediaFile.filePath(), mediaFile.fileName());
-            var url = mediaFileUrl.createUrl();
-            var mediaId = mediaFileUrl.getMediaId(url);
+            var url = mediaUrls.createUrl();
+            var mediaId = mediaUrls.getMediaId(url);
 
             logger.info("Generated media id: {}, and content type: {}", mediaId, contentType);
 

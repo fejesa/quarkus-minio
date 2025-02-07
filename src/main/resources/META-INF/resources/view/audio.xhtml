@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="jakarta.faces.facelets"
+      lang="en">
+
+<script>
+    document.addEventListener('contextmenu', event => {
+        event.preventDefault();
+    });
+    document.querySelectorAll('.disabled').forEach(element => {
+        element.style.pointerEvents = 'none';
+    });
+</script>
+
+<f:view>
+    <ui:include src="../includes/header.xhtml"/>
+    <h:body>
+        <div id="container">
+            <p:audio id="mediaAudio" value="#{audioView.media}"
+                     player="#{audioView.extension}"
+                     controls="true"
+                     cache="false"
+                     duration="#{audioView.media.contentLength}"
+                     autoplay="true"
+                     preload="none"/>
+        </div>
+    </h:body>
+</f:view>
+</html>

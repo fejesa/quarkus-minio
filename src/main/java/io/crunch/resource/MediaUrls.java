@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.*;
  * The query parameter is a base64 unique id with length 22 based on random UUID.
  */
 @ApplicationScoped
-public class MediaFileUrl {
+public class MediaUrls {
 
     /** Defines the length of the media file unique identifier that is part of the public url. **/
     private static final int MEDIA_FILE_UNIQUE_ID_LENGTH = 22;
@@ -30,7 +30,7 @@ public class MediaFileUrl {
 
     private final int fileServerPort;
 
-    public MediaFileUrl(@ConfigProperty(name = "quarkus.http.port", defaultValue = "8080") int fileServerPort) {
+    public MediaUrls(@ConfigProperty(name = "quarkus.http.port", defaultValue = "8080") int fileServerPort) {
         this.encoder = Base64.getUrlEncoder();
         this.fileServerPort = fileServerPort;
     }
