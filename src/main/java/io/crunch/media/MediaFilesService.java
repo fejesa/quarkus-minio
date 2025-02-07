@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -31,5 +32,12 @@ public class MediaFilesService implements MediaFiles {
     @Override
     public Optional<MediaFile> getByMediaId(String mediaId) {
         return mediaFileRepository.findByMediaId(mediaId);
+    }
+
+    @Override
+    public List<String> getMediaIds() {
+        return mediaFileRepository.findAll().stream()
+                .map(MediaFile::getMediaId)
+                .toList();
     }
 }

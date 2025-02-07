@@ -2,7 +2,6 @@ package io.crunch.resource;
 
 import io.crunch.media.MediaFiles;
 import io.crunch.store.MediaFileStore;
-import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
@@ -16,26 +15,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @Path("/api")
 public class MediaFileServerResource {
 
     private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Inject
-    MediaFileChecksumGenerator checksumGenerator;
+    private final MediaFileChecksumGenerator checksumGenerator;
 
-    @Inject
-    ContentTypeExtractor contentTypeExtractor;
+    private final ContentTypeExtractor contentTypeExtractor;
 
-    @Inject
-    MediaUrls mediaUrls;
+    private final MediaUrls mediaUrls;
 
-    @Inject
-    MediaFileStore mediaFileStore;
+    private final MediaFileStore mediaFileStore;
 
-    @Inject
-    MediaFiles mediaFiles;
+    private final MediaFiles mediaFiles;
+
+    public MediaFileServerResource(MediaFileChecksumGenerator checksumGenerator, ContentTypeExtractor contentTypeExtractor,
+                                   MediaUrls mediaUrls, MediaFileStore mediaFileStore, MediaFiles mediaFiles) {
+        this.checksumGenerator = checksumGenerator;
+        this.contentTypeExtractor = contentTypeExtractor;
+        this.mediaUrls = mediaUrls;
+        this.mediaFileStore = mediaFileStore;
+        this.mediaFiles = mediaFiles;
+    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -64,6 +68,15 @@ public class MediaFileServerResource {
             logger.error("Error storing media file", e);
             throw new BadRequestException();
         }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse<List<String>> getMediaIds() {
+        return RestResponse.ok(mediaFiles.getMediaIds()
+                .stream()
+                .map(mediaUrls::createUrl)
+                .toList());
     }
 
     private void validateChecksum(FileUpload mediaFile, MediaFileDescription mediaFileDescription) {

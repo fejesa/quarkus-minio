@@ -35,11 +35,19 @@ public class MediaUrls {
         this.fileServerPort = fileServerPort;
     }
 
+    public String createUrl(String mediaId) {
+        var query = "m=" + mediaId;
+        try {
+            return getUrl(query);
+        } catch (URISyntaxException e) {
+            throw new MediaFileServerException(e);
+        }
+    }
+
     public String createUrl() {
         var query = "m=" + randomId();
         try {
-            var url = new URI("http", null, "localhost", fileServerPort, "/media", query, null);
-            return url.toString();
+            return getUrl(query);
         } catch (URISyntaxException e) {
             throw new MediaFileServerException(e);
         }
@@ -65,6 +73,11 @@ public class MediaUrls {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Invalid URL: " + url);
         }
+    }
+
+    private String getUrl(String query) throws URISyntaxException {
+        var url = new URI("http", null, "localhost", fileServerPort, "/media", query, null);
+        return url.toString();
     }
 
     private Map<String, List<String>> splitQuery(URI uri) {

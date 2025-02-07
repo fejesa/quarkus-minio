@@ -56,6 +56,41 @@ class MediaFileServerResourceTest {
         assertThat(entityManager.createQuery(query).getSingleResult()).isNotNull();
     }
 
+    @Test
+    void fetchListOfMediaFiles() throws Exception{
+        var sampleAudioFile = getSampleMediaFile("/sample-audio.mp3");
+        var audioChecksum = checksumGenerator.checksum(sampleAudioFile);
+
+        var audioMediaId = given()
+            .multiPart("description", new MediaFileDescription(audioChecksum), MediaType.APPLICATION_JSON)
+            .multiPart("media", sampleAudioFile.toFile(), MediaType.APPLICATION_OCTET_STREAM)
+            .post("/api")
+            .then()
+            .statusCode(Response.Status.CREATED.getStatusCode())
+            .extract()
+            .response().getBody().asString();
+
+        var sampleVideoFile = getSampleMediaFile("/sample-video.mp4");
+        var videoChecksum = checksumGenerator.checksum(sampleVideoFile);
+
+        var videoMediaId = given()
+            .multiPart("description", new MediaFileDescription(videoChecksum), MediaType.APPLICATION_JSON)
+            .multiPart("media", sampleVideoFile.toFile(), MediaType.APPLICATION_OCTET_STREAM)
+            .post("/api")
+            .then()
+            .statusCode(Response.Status.CREATED.getStatusCode())
+            .extract()
+            .response().getBody().asString();
+
+        var mediaIds = given()
+            .get("/api")
+            .then()
+            .log().all()
+            .statusCode(Response.Status.OK.getStatusCode())
+            .extract().jsonPath().getList(".", String.class);
+        assertThat(mediaIds).contains(audioMediaId, videoMediaId);
+    }
+
     private Path getSampleMediaFile(String path) throws URISyntaxException {
         var url = MediaFileServerResourceTest.class.getResource(path);
         return Path.of(Objects.requireNonNull(url).toURI());

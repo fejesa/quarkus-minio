@@ -25,10 +25,6 @@
         <location>/error/fileNotFound.xhtml</location>
     </error-page>
     <error-page>
-        <exception-type>io.smallrye.faulttolerance.api.RateLimitException</exception-type>
-        <location>/error/tooManyRequests.xhtml</location>
-    </error-page>
-    <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error/generalError.xhtml</location>
     </error-page>

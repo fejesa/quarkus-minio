@@ -74,10 +74,6 @@
             <artifactId>quarkus-omnifaces</artifactId>
             <version>${quarkus-omnifaces.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
-        </dependency>
         <!-- MinIO dependencies -->
         <dependency>
             <groupId>io.quarkiverse.minio</groupId>

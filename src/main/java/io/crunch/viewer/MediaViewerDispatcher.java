@@ -3,7 +3,6 @@ package io.crunch.viewer;
 import io.crunch.media.MediaFile;
 import io.crunch.media.MediaFiles;
 import io.crunch.shared.MediaFileNotFoundException;
-import io.smallrye.faulttolerance.api.RateLimitException;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -150,9 +149,6 @@ public class MediaViewerDispatcher extends HttpServlet {
         if (e instanceof MediaFileNotFoundException || e instanceof IllegalArgumentException) {
             response.setStatus(404); // Not Found
             request.getRequestDispatcher(ViewerUrls.NOT_FOUND_ERROR_PAGE).forward(request, response);
-        } else if (e instanceof RateLimitException) {
-            response.setStatus(429); // Too Many Requests
-            request.getRequestDispatcher(ViewerUrls.TOO_MANY_REQUESTS_ERROR_PAGE).forward(request, response);
         } else {
             response.setStatus(500); // Internal Server Error
             request.getRequestDispatcher(ViewerUrls.GENERAL_ERROR_PAGE).forward(request, response);

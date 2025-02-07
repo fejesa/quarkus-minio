@@ -9,8 +9,6 @@ public class ViewerUrls {
 
     public static final String NOT_FOUND_ERROR_PAGE = "/error/fileNotFound.xhtml";
 
-    public static final String TOO_MANY_REQUESTS_ERROR_PAGE = "/error/tooManyRequests.xhtml";
-
     public static String getViewerUrl(String contentType) {
         return switch (contentType) {
             case "jpg", "jp2", "jpeg", "png" -> "/view/image.xhtml";
