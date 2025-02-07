@@ -15,17 +15,20 @@
         element.style.pointerEvents = 'none';
     });
 </script>
-<style>
-    .custom-image {
-        max-width: 100%;
-        max-height: 580px;
-    }
-</style>
 <f:view>
     <ui:include src="../includes/header.xhtml"/>
     <h:body>
         <div id="container">
-            <p:graphicImage value="#{imageView.media}" cache="false" styleClass="custom-image"/>
+            <p:video id="rtrVideo" value="#{videoView.media}"
+                     player="#{videoView.extension}"
+                     autoplay="false"
+                     controls="true"
+                     controlslist="nodownload"
+                     cache="false"
+                     preload="none"
+                     playsinline="false"
+                     height="580px"
+                     width="100%"/>
         </div>
     </h:body>
 </f:view>
