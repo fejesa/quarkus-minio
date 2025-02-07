@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 @ApplicationScoped
-public class ContentTypeChecker {
+public class ContentTypeExtractor {
 
     /**
      * Detects the content type of the provided file. If the type is <i>quicktime</i> then it parses the file to determine the correct format.

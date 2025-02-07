@@ -11,19 +11,19 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ContentTypeCheckerTest {
+class ContentTypeExtractorTest {
 
     @ParameterizedTest
     @MethodSource("mediaSources")
     void checkContentType(String fileName, String expectedType) throws Exception {
-        var contentTypeChecker = new ContentTypeChecker();
+        var contentTypeExtractor = new ContentTypeExtractor();
         var path = resolvePath(fileName);
-        var result = contentTypeChecker.getContentType(path, path.getFileName().toString());
+        var result = contentTypeExtractor.getContentType(path, path.getFileName().toString());
         assertThat(result).isEqualTo(expectedType);
     }
 
     private static Path resolvePath(String fileName) throws URISyntaxException {
-        var url = ContentTypeCheckerTest.class.getResource(fileName);
+        var url = ContentTypeExtractorTest.class.getResource(fileName);
         return Path.of(Objects.requireNonNull(url).toURI());
     }
 
