@@ -33,10 +33,6 @@
         <location>/error/generalError.xhtml</location>
     </error-page>
     <error-page>
-        <error-code>429</error-code>
-        <location>/error/tooManyRequests.xhtml</location>
-    </error-page>
-    <error-page>
         <error-code>500</error-code>
         <location>/error/generalError.xhtml</location>
     </error-page>
