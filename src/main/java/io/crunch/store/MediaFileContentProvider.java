@@ -4,9 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 @ApplicationScoped
 public class MediaFileContentProvider {
 
@@ -43,24 +40,5 @@ public class MediaFileContentProvider {
                 .contentLength(mediaFileStore.getFileSize(fileName))
                 .stream(() -> mediaFileStore.read(fileName))
                 .build();
-    }
-
-    /**
-     * Writes the content of the file to the given output stream.<p>
-     * This method should be called when the file is requested to be downloaded, and the file is written to the message body.
-     *
-     * @param fileName The name of the file that should be read.
-     * @param output   The output stream to write the content to.
-     * @throws IOException if there is an error reading the file.
-     */
-    public void writeContent(String fileName, OutputStream output) throws IOException {
-        try (var is = mediaFileStore.read(fileName)) {
-            int c;
-            var buf = new byte[4096];
-            while ((c = is.read(buf, 0, buf.length)) > 0) {
-                output.write(buf, 0, c);
-                output.flush();
-            }
-        }
     }
 }
