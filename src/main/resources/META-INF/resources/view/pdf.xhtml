@@ -9,13 +9,15 @@
 <f:view>
     <ui:include src="../includes/header.xhtml"/>
     <script>
+        // Disable right-click context menu and pointer events for disabled elements
         document.addEventListener('contextmenu', event => {
             event.preventDefault();
         });
         document.querySelectorAll('.disabled').forEach(element => {
             element.style.pointerEvents = 'none';
         });
-
+        // Use PDF.js is a Portable Document Format (PDF) viewer that is built with HTML5. It provides a better customizability and accessibility.
+        // To prevent the user from downloading the PDF file, the buttons for printing and downloading the PDF file are hidden.
         pdfHideButtons = function() {
             const pdfViewer = window.frames[0].PDFViewerApplication;
             if (pdfViewer) {
