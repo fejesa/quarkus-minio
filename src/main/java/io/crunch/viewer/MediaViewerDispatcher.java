@@ -120,7 +120,7 @@ public class MediaViewerDispatcher extends HttpServlet {
      */
     private void saveMediaRequest(HttpServletResponse response, String mediaId) {
         var token = createMediaRequestToken();
-        logger.info("Set [{}] cookie: [{}]", MediaViewerRequestParameters.TOKEN_COOKIE_NAME, token);
+        logger.info("Set {} cookie: {}", MediaViewerRequestParameters.TOKEN_COOKIE_NAME, token);
         addMediaIdCookie(response, token);
         requestCache.putMediaId(token, mediaId);
     }

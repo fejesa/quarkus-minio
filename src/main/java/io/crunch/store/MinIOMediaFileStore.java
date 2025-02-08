@@ -71,6 +71,7 @@ public class MinIOMediaFileStore implements MediaFileStore {
      * @param fileName The name of the file in MinIO.
      * @return An {@link InputStream} to read the file content.
      * @throws MediaFileServerException if an error occurs while reading the file.
+     * @apiNote By calling this method, the caller is responsible for closing the input stream.
      */
     @Override
     public InputStream read(String fileName) {

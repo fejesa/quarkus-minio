@@ -28,6 +28,7 @@ import java.util.List;
  * multipart file uploads. The uploaded files are validated, assigned a unique media ID,
  * and stored persistently.
  * </p>
+ * @apiNote The endpoints are executed in blocking mode to simplify the implementation.
  */
 @Path("/api")
 public class MediaFileServerResource {
@@ -59,12 +60,13 @@ public class MediaFileServerResource {
      * The uploaded file is validated using its checksum before being stored.
      * If the validation succeeds, a unique media ID is generated, and the file is stored with its content type.
      * </p>
+     * Note: In a production environment, additional security measures should be implemented to prevent
+     * unauthorized access, and to ensure infection-free file uploads.
      *
      * @param mediaFile             the uploaded media file (cannot be null)
      * @param mediaFileDescription  metadata associated with the media file, including checksum validation
      * @return a response containing the URL of the stored media file
      * @throws BadRequestException if the checksum validation fails or any unexpected error occurs
-     * @throws NotAuthorizedException if the user is not authorized to upload the file
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -87,8 +89,6 @@ public class MediaFileServerResource {
             mediaFileStore.store(mediaFile.filePath(), mediaId, contentType);
 
             return RestResponse.status(Response.Status.CREATED, url);
-        } catch (BadRequestException | NotAuthorizedException e) {
-            throw e;
         } catch (Exception e) {
             logger.error("Error storing media file", e);
             throw new BadRequestException();
