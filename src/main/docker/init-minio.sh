@@ -7,7 +7,7 @@ sleep 5
 # Configure the MinIO client (mc)
 CUSTOM_MINIO="custom-minio"
 CUSTOM_BUCKET="media"
-mc alias set $CUSTOM_MINIO http://minio:9000 ROOTNAME CHANGEME123
+mc alias set $CUSTOM_MINIO http://minio:9000 minioroot miniopassword
 
 # Define access and secret keys
 USER_ACCESS_KEY="media-access-key"
