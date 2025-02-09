@@ -57,7 +57,7 @@ public class MediaFileServerResource {
     /**
      * Handles the upload of a media file.
      * <p>
-     * The uploaded file is validated using its checksum before being stored.
+     * The uploaded file is validated using its checksum before being stored. It also checks the content type of the file.
      * If the validation succeeds, a unique media ID is generated, and the file is stored with its content type.
      * </p>
      * Note: In a production environment, additional security measures should be implemented to prevent
@@ -80,6 +80,7 @@ public class MediaFileServerResource {
             validateChecksum(mediaFile, mediaFileDescription);
 
             var contentType = contentTypeExtractor.getContentType(mediaFile.filePath(), mediaFile.fileName());
+            checkContentType(contentType);
             var url = mediaUrls.createUrl();
             var mediaId = mediaUrls.getMediaId(url);
 
@@ -128,6 +129,16 @@ public class MediaFileServerResource {
         if (!mediaFileDescription.checksum().equals(checksum)) {
             logger.error("Media file {} checksum error", mediaFile.fileName());
             throw new BadRequestException();
+        }
+    }
+
+    private void checkContentType(String contentType) {
+        boolean isSupported = switch (contentType) {
+            case "image/jpeg", "image/png", "audio/mpeg", "application/pdf", "video/mp4" -> true;
+            default -> false;
+        };
+        if (!isSupported) {
+            throw new BadRequestException("Unsupported content type: " + contentType);
         }
     }
 }
