@@ -1,12 +1,76 @@
 # Quarkus MinIO Media Storage
 
 ## Introduction
-This project integrates [MinIO](https://min.io/) with [Quarkus](https://quarkus.io/) to provide a scalable and high-performance object storage solution. It is designed to handle large amounts of unstructured data such as photos, videos, audio files, and PDF documents in streaming mode.
+Recently, I faced a challenge related to media file availability. The system needed to support different media file types, such as video, audio, images, and documents, often in large sizes. The core challenge was enabling authenticated users to upload any number of media files, regardless of size, while ensuring the system correctly determines and validates their content type before storing them.
 
-## Features
-- Integration with Quarkus for rapid application development.
-- Uses MinIO for object storage.
-- Supports PostgreSQL for database operations.
+The media files had to be stored in S3 or a compatible storage solution, with flexibility to support both on-premises and public cloud environments. Additionally, non-authenticated users should be able to access the files for viewing, but downloading should not be permitted.
+
+We live in the cloud era, where both microservices and data are hosted on the cloud. Therefore, deploying this application in the cloud was a natural choice.
+
+## Why Quarkus?
+My preferred cloud-native framework is [Quarkus](https://quarkus.io/), which provides seamless integration with various tools required for this challenge.
+
+## High-Level Architecture
+The application's high-level architecture is illustrated in the following diagram:
+
+![Architecture](docs/architecture.png)
+
+- **File Upload**: Users upload media files via a REST API.
+- **Media Viewing**: Jakarta Server Faces (JSF) is used for media file viewing.
+- **Metadata Storage**: File metadata (e.g., content type and URL) is stored in PostgreSQL (but any database can be used).
+- **File Storage**: MinIO serves as the S3-compatible object storage solution.
+
+[MinIO](https://min.io/) is a high-performance, S3-compatible object storage system designed for cloud-native applications, Kubernetes, and edge computing. It offers scalability, strong consistency, and enterprise-grade security while supporting distributed deployments. MinIO is optimized for large-scale data workloads, AI/ML, and analytics, making it a reliable solution for modern storage needs. Additionally, the MinIO Quarkus extension simplifies the integration of S3 support into the application.
+
+## Backend Implementation
+The backend consists of a REST API for file uploads. During the upload process, the system extracts the file's content type, which determines the appropriate media player type for rendering on the frontend.
+
+For content extraction, I opted for [Apache Tika](https://tika.apache.org/), an open-source content analysis toolkit that detects, extracts, and processes metadata and text from various file formats, including PDFs, documents, images, and multimedia.
+
+Finally, a URL is generated for each uploaded file and returned to the user upon successful upload.
+
+> **Note**: The provided example focuses solely on media file processing and does not include security concerns such as virus scanning and authentication for simplicity.
+
+A high-level diagram of the backend is shown below.
+
+![Backend](docs/backend.png)
+
+## Frontend Implementation
+For the frontend, I chose [PrimeFaces](https://www.primefaces.org/), a popular open-source UI framework for JavaServer Faces (JSF). PrimeFaces offers a rich set of components, themes, and AJAX support for building modern, responsive web applications. It simplifies front-end development with built-in widgets, customizable UI elements, and seamless integration with Jakarta EE and Spring-based applications.
+
+PrimeFaces provides built-in **Media, Video, Audio, and Document Viewer** components that use standard HTML5 elements or embedded libraries like PDF.js, eliminating the need for additional browser plugins.
+
+A high-level diagram of the frontend is shown below.
+
+![Frontend](docs/frontend.png)
+
+## How It Works
+In a previous article, I highlighted that **streaming** is the best approach for accessing large files, as it provides optimal throughput and low CPU usage with balanced memory consumption. This approach is also used in this implementation.
+
+The generated file URL does not include media type information. When a user accesses the URL:
+
+1. A Dispatcher servlet retrieves the content type from the database.
+2. It generates a Cookie and forwards the request to the appropriate viewer page, which renders the correct media player type.
+
+So far, so good. But how can media be accessed without allowing downloads or direct file access?
+
+This is where **MinIO and PrimeFaces work together**:
+
+- When accessing an object stored in MinIO (or any S3-compatible storage), it can be fetched as an **InputStream**.
+- PrimeFaces generates a unique URL, and the stream is copied to the HTTP response using **StreamContent** support.
+- Every time a media file is requested, the user sees a random URL in their Developer Console, but the browser URL remains unchanged.
+- Additionally, disabling the browser's context menu helps prevent users from downloading or printing media files.
+
+> **Note**: This solution does not fully prevent experienced users from downloading media. Feel free to enhance it based on your use case!
+
+## Development and Testing
+You may wonder how to integrate and test an S3-compatible object storage solution in your application. **MinIO makes this easy, and there is Testcontainers support for MinIO!**
+
+I am a big fan of [Testcontainers](https://testcontainers.com/) because it simplifies development and provides better validation of implementations using real dependencies in tests.
+
+## Implementation Limitations
+- The default MinIO client is used for fetching objects (files) as a stream. For long videos, streaming may break. To mitigate this, consider customizing MinIO on both the client and server side.
+- Videos and audio files are not seekable in this solution. If seek functionality is required, a dedicated media streaming server is recommended instead of a general-purpose object store.
 
 ## Installation
 ### Prerequisites
