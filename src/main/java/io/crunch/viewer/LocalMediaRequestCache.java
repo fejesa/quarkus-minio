@@ -22,9 +22,9 @@ public class LocalMediaRequestCache implements MediaRequestCache {
 
     @Override
     public String getMediaId(String token) {
-        var removed = requestIdCache.remove(token);
-        logger.info("Remove token {} from cache, media id : {}", token, removed);
-        return removed;
+        var mediaId = requestIdCache.get(token);
+        logger.info("Get media id {} from cache, using token : {}", mediaId, token);
+        return mediaId;
     }
 
     @Override
