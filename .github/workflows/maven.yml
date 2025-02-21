@@ -1,5 +1,8 @@
 name: Java CI with Maven
-
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
 on:
   push:
   pull_request:
