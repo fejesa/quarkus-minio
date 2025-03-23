@@ -75,7 +75,8 @@ services:
       - QUARKUS_DATASOURCE_PASSWORD=media  # Database password
 
       # MinIO Configuration
-      - QUARKUS_MINIO_URL=http://host.docker.internal:9000  # MinIO service URL
+      - QUARKUS_MINIO_HOST=host.docker.internal  # MinIO host
+      - QUARKUS_MINIO_PORT=9000  # MinIO port
       - QUARKUS_MINIO_ACCESS_KEY=media-access-key  # MinIO access key
       - QUARKUS_MINIO_SECRET_KEY=media-secret-key  # MinIO secret key
       - QUARKUS_MINIO_SECURE=false  # Disables SSL for MinIO (useful for local development)

@@ -12,10 +12,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.18.4</quarkus.platform.version>
-        <quarkus-primefaces.version>3.15.0</quarkus-primefaces.version>
+        <quarkus.platform.version>3.19.4</quarkus.platform.version>
+        <quarkus-primefaces.version>3.15.2</quarkus-primefaces.version>
         <quarkus-omnifaces.version>4.6.2</quarkus-omnifaces.version>
-        <quarkus-minio.version>3.7.7</quarkus-minio.version>
+        <quarkus-minio.version>3.8.1</quarkus-minio.version>
         <tika.version>3.1.0</tika.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <awaitility.version>4.2.2</awaitility.version>
