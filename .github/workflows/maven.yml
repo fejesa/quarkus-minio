@@ -3,6 +3,8 @@ permissions:
   contents: read
   pull-requests: write
   statuses: write
+  checks: write
+  id-token: write
 on:
   push:
   pull_request:
