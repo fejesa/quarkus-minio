@@ -161,8 +161,7 @@ When you navigate to `https://localhost:8080/media?m=xxx`, you will see a sample
 ### Build Docker file
 To build the docker image, execute the following commands
 ```
-mvn clean package -DskipTests
-docker build -f src/main/docker/Dockerfile.jvm -t media-fs .
+mvn clean package
 ```
 The application depends on MinIO and PostgreSQL services. You can start them using the following commands:
 ```sh
